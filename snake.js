@@ -27,7 +27,12 @@ function Player(name,character) {
 io.sockets.on('connection', function (socket) {
 	socket.on('start', function(name){
 		console.log('in start');
-		socket.player = new Player(name, name[0]);
+		if (name == null) {
+			character = "#"
+		} else {
+			character = name[0]
+		}
+		socket.player = new Player(name, character);
 		socket.broadcast.emit('announce', socket.player.name + ' entered');
 	});
 	
@@ -43,6 +48,6 @@ io.sockets.on('connection', function (socket) {
        // socket.broadcast.emit('announce', 'This is a broadcast'); 
 
 	   // Sends the data back to all clients connected.
-       io.sockets.emit('move', movement, socket.player);
+       io.sockets.emit('move', movement, socket.player.character);
    });
 });
