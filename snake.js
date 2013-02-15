@@ -16,14 +16,19 @@ function handler (req, res) {
 					res.writeHead(200); // sucess
 					res.end(data); // Send data to user.
 				});
-}
+};
+
+function Player(name,character) {
+	this.name = name;
+	this.character = character;
+};
 
 // registering event
 io.sockets.on('connection', function (socket) {
-	socket.on('start', function(player){
+	socket.on('start', function(name){
 		console.log('in start');
-		socket.player = player;
-		socket.broadcast.emit('announce', player + ' entered');
+		socket.player = new Player(name, name[0]);
+		socket.broadcast.emit('announce', socket.player.name + ' entered');
 	});
 	
 	socket.on('say', function(key) {
@@ -38,6 +43,6 @@ io.sockets.on('connection', function (socket) {
        // socket.broadcast.emit('announce', 'This is a broadcast'); 
 
 	   // Sends the data back to all clients connected.
-       io.sockets.emit('move', movement);
+       io.sockets.emit('move', movement, socket.player);
    });
 });
