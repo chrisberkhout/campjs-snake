@@ -1,0 +1,45 @@
+<!doctype html>
+
+<html>
+  <head>
+	<script src="/socket.io/socket.io.js"></script>
+	<script type="text/javascript">
+
+	  var socket = io.connect('http://10.10.2.150:8124');
+
+	  <!-- Connect is built in -->
+	  socket.on('connect', function(){
+	  	socket.emit('start', prompt('Enter player name'));
+	  });
+	  
+	  socket.on('announce', function(data) {
+	  <!-- Set callback data to an element. -->
+	  	document.getElementById("broadcast").innerHTML=data;
+	  });
+
+	  socket.on('move', function(data) {
+	  <!-- Set callback data to an element. -->
+	  	document.getElementById("ground").value=data;
+	  });
+
+	  <!-- Called on key up -->
+      updateCode = function(e) {
+	    var dir = [];
+	    dir[37] = 'left';
+	    dir[38] = 'up';
+	    dir[39] = 'right';
+	    dir[40] = 'down';
+
+	    <!-- var text = document.getElementById('ground').value; -->
+    	socket.emit('say', dir[e.keyCode]);
+      };
+
+	</script>
+  </head>
+
+  <body onkeyup="updateCode(event)">
+	<div id="broadcast" ></div>
+	<div id="ground" ></div>
+  </body>
+
+</html>
