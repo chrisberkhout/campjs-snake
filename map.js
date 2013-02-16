@@ -5,20 +5,26 @@ module.exports = function() {
 	this.width = 80;
 	this.height = 40;
 
-	this.terrain = [];
-	for (i=0; i<this.height; i++) {
-		var row = [];
-		for (j=0; j<this.width; j++) {
-			row[j] = ".";
-		}
-		this.terrain[i] = row;
-	}
+  var that = this;
+	this.terrain = function() {
+    var result = [];
+    for (i=0; i<that.height; i++) {
+      var row = [];
+      for (j=0; j<that.width; j++) {
+        row[j] = ".";
+      }
+      result[i] = row;
+    }
+    return result;
+  };
+
+  this.snakes = [];
 
 	this.placeSnake = function(snake) {
+    this.snakes.push(snake);
 		var x = parseInt(Math.random() * this.width);
 		var y = parseInt(Math.random() * this.height);
 		snake.setPos({x: x,y: y})
-		this.terrain[snake.y][snake.x] = snake.character;
 	};
 
 	this.moveSnake = function(snake, movement) {
@@ -31,11 +37,16 @@ module.exports = function() {
     if (y < 0) { y = this.height - 1; }
 
 		snake.setPos({x: x, y: y});
-		this.terrain[snake.y][snake.x] = snake.character;
 	};
 
 	this.toString = function() {
-		return _(this.terrain).map(function(row) {
+		var result = this.terrain();
+
+    _(this.snakes).each(function(snake) {
+      result[snake.y][snake.x] = snake.character;
+    });
+
+    return _(result).map(function(row) {
 			return row.join("") + "\n";
 		}).join("");
 	};
