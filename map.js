@@ -2,6 +2,13 @@ var _ = require('underscore');
 
 module.exports = function() {
 
+  this.randomPos = function() {
+    return {
+      x: parseInt(Math.random() * this.width),
+		  y: parseInt(Math.random() * this.height)
+    };
+  };
+
 	this.width = 80;
 	this.height = 40;
 
@@ -22,9 +29,7 @@ module.exports = function() {
 
 	this.placeSnake = function(snake) {
     this.snakes.push(snake);
-		var x = parseInt(Math.random() * this.width);
-		var y = parseInt(Math.random() * this.height);
-		snake.setPos({x: x,y: y})
+		snake.setPos(this.randomPos());
 	};
 
 	this.moveSnake = function(snake, movement) {
@@ -39,6 +44,10 @@ module.exports = function() {
 		snake.setPos({x: x, y: y});
 	};
 
+  this.placeFood = function() {
+    this.food = this.randomPos();
+  };
+
 	this.toString = function() {
 		var result = this.terrain();
 
@@ -47,6 +56,9 @@ module.exports = function() {
         result[pos.y][pos.x] = snake.character;
       });
     });
+    if (this.food !== undefined) {
+      result[this.food.y][this.food.x] = '+';
+    }
 
     return _(result).map(function(row) {
 			return row.join("") + "\n";

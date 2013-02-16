@@ -34,9 +34,7 @@ function Snake(name) {
 		this.x = pos.x;
 		this.y = pos.y;
     this.positions.push(pos);
-    if (this.positions.length > this.length) {
-      this.positions.shift();
-    }
+    if (this.positions.length > this.length) { this.positions.shift(); }
 	};
 
 };
@@ -52,6 +50,8 @@ io.sockets.on('connection', function (socket) {
 		socket.snake = new Snake(name);
 		map.placeSnake(socket.snake);
 
+    map.placeFood();
+
 		// Broadcast sends message to everyone but the new user.
 		socket.broadcast.emit('announce', socket.snake.name + ' entered');
 	});
@@ -63,11 +63,6 @@ io.sockets.on('connection', function (socket) {
 			'right':{x: 1, y: 0},
 			'down': {x: 0, y: 1}
 		}[key];
-
-		// Send shit to everyone but yourself.
-		// socket.broadcast.emit('announce', 'This is a broadcast'); 
-
-		// Move the snake with the keyboard
 
     if (socket.snake !== undefined && movement !== undefined) {
       map.moveSnake(socket.snake, movement);
