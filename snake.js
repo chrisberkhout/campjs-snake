@@ -70,7 +70,7 @@ io.sockets.on('connection', function (socket) {
 		socket.broadcast.emit('announce', socket.snake.name + ' entered');
 	});
 	
-	socket.on('say', function(key) {
+	socket.on('move', function(key) {
 		var movement = {
 			'left': {x: -1, y: 0},
 			'up':   {x: 0, y: -1},
