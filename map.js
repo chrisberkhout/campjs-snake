@@ -43,7 +43,9 @@ module.exports = function() {
 		var result = this.terrain();
 
     _(this.snakes).each(function(snake) {
-      result[snake.y][snake.x] = snake.character;
+      _(snake.positions).each(function(pos) {
+        result[pos.y][pos.x] = snake.character;
+      });
     });
 
     return _(result).map(function(row) {

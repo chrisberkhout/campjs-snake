@@ -26,11 +26,14 @@ function handler (req, res) {
 function Snake(name) {
 	this.name = name;
 	this.character = this.name === null ? '#' : this.name[0];
+  this.positions = [];
 
 	this.setPos = function(pos) {
 		this.x = pos.x;
 		this.y = pos.y;
+    this.positions.push(pos);
 	};
+
 };
 
 
