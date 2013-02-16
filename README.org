@@ -1,0 +1,3 @@
+* README
+
+Multi player snake in node.js
