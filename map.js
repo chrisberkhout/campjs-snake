@@ -28,11 +28,11 @@ module.exports = function() {
 	};
 
 	this.moveSnake = function(snake, movement) {
-		x = snake.x + movement.x;
+		x = snake.head().x + movement.x;
     if (x >= this.width) { x = 0; }
     if (x < 0) { x = this.width - 1; }
 
-		y = snake.y + movement.y;
+		y = snake.head().y + movement.y;
     if (y >= this.height) { y = 0; }
     if (y < 0) { y = this.height - 1; }
 
