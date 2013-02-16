@@ -17,9 +17,9 @@
 	  	document.getElementById("broadcast").innerHTML=data;
 	  });
 
-	  socket.on('move', function(movement, character) {
+	  socket.on('move', function(movement, map) {
 	  <!-- Set callback movement to an element. -->
-	  	document.getElementById("ground").innerHTML=character;
+	  	document.getElementById("ground").innerHTML="<pre>" + map + "</pre>";
 	  });
 
 	  <!-- Called on key up -->

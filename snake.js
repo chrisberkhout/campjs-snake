@@ -23,16 +23,36 @@ function Player(name,character) {
 	this.character = character;
 };
 
+function Map(){
+	this.width = 80;
+	this.height = 40;
+
+	// Create a map
+	for(int i=0; i=<this.width; i++) {
+		for(int i=0; i=<this.width; i++) {
+
+		};
+	};
+
+	return ['.','.','.','.','.','.','.','.']
+};
+
 // registering event
 io.sockets.on('connection', function (socket) {
 	socket.on('start', function(name){
 		console.log('in start');
+
+		// Set users character
 		if (name == null) {
 			character = "#"
 		} else {
 			character = name[0]
 		}
+
+		// Setup player and attach to users scope through sockets.
 		socket.player = new Player(name, character);
+
+		// Broadcast sends message to everyone but the new user.
 		socket.broadcast.emit('announce', socket.player.name + ' entered');
 	});
 	
@@ -48,6 +68,8 @@ io.sockets.on('connection', function (socket) {
        // socket.broadcast.emit('announce', 'This is a broadcast'); 
 
 	   // Sends the data back to all clients connected.
-       io.sockets.emit('move', movement, socket.player.character);
+       // io.sockets.emit('move', movement, socket.player.character);
+
+       io.sockets.emit('move', movement, ".......");
    });
 });
