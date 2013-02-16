@@ -23,10 +23,10 @@ function Snake(name) {
 	this.name = name;
 	this.character = this.name === null ? '#' : this.name[0];
 
-	// this.move = function(pos) {
-	// 	this.x = pos.x;
-	// 	this.y = pos.y;
-	// };
+	this.move = function(pos) {
+		this.x = pos.x;
+		this.y = pos.y;
+	};
 };
 
 function Map() {
@@ -45,14 +45,15 @@ function Map() {
 	this.placeSnake = function(snake) {
 		var x = parseInt(Math.random() * this.width);
 		var y = parseInt(Math.random() * this.height);
-		this.terrain[y][x] = snake.character;
+		snake.move({x: x,y: y})
+		this.terrain[snake.y][snake.x] = snake.character;
 	};
 
 	this.moveSnake = function(snake, movement) {
-
-		
-		
-		// this.terrain[y][x] = "x";
+		x = snake.x + movement.x;
+		y = snake.y + movement.y;
+		snake.move({x: x, y: y});
+		this.terrain[snake.y][snake.x] = snake.character;
 	};
 
 	this.toString = function() {
@@ -90,7 +91,7 @@ io.sockets.on('connection', function (socket) {
 
 		// Move the snake with the keyboard
 
-	map.moveSnake(socket.snake.character, movement);
+	map.moveSnake(socket.snake, movement);
 
     io.sockets.emit('move', movement, map.toString());
 
