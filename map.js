@@ -57,14 +57,14 @@ module.exports = function() {
 	this.toString = function() {
 		var result = this.terrain();
 
+    if (this.food !== undefined) {
+      result[this.food.y][this.food.x] = '+';
+    }
     _(this.snakes).each(function(snake) {
       _(snake.positions).each(function(pos) {
         result[pos.y][pos.x] = snake.character;
       });
     });
-    if (this.food !== undefined) {
-      result[this.food.y][this.food.x] = '+';
-    }
 
     return _(result).map(function(row) {
 			return row.join("") + "\n";

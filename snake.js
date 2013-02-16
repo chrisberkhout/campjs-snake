@@ -54,6 +54,14 @@ io.sockets.on('connection', function (socket) {
 
 		// Broadcast sends message to everyone but the new user.
 		socket.broadcast.emit('announce', socket.snake.name + ' entered');
+
+    var autoMover = function() {
+      _(map.snakes).each(function(snake) {
+        map.moveSnake(snake, { x: 1, y: 0 })
+      });
+      io.sockets.emit('redraw', map.toString());
+    };
+    setInterval(autoMover, 1000);
 	});
 	
 	socket.on('move', function(key) {
@@ -70,7 +78,7 @@ io.sockets.on('connection', function (socket) {
       console.log("movement triggered, but don't have stuff");
     };
 
-    io.sockets.emit('move', movement, map.toString());
+    io.sockets.emit('redraw', map.toString());
 
   });
 });

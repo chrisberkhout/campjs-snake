@@ -24,7 +24,7 @@
 	  	document.getElementById("broadcast").innerHTML=data;
 	  });
 
-	  socket.on('move', function(movement, map) {
+	  socket.on('redraw', function(map) {
 	  <!-- Set callback movement to an element. -->
 	  	document.getElementById("ground").innerHTML="<pre>" + map + "</pre>";
 	  });
