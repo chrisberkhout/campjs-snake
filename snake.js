@@ -19,9 +19,13 @@ function handler (req, res) {
 				});
 };
 
-function Player(name,character) {
-	this.name = name;
-	this.character = character;
+function Snake(name) {
+  this.name = name;
+  this.char = this.name === null ? '#' : this.name[0];
+  this.move = function(pos) {
+    this.x = pos.x;
+    this.y = pos.y;
+  };
 };
 
 function Map() {
@@ -37,6 +41,12 @@ function Map() {
     this.terrain[i] = row;
   }
 
+  this.placeSnake = function(snake) {
+    var x = parseInt(Math.random() * this.width);
+    var y = parseInt(Math.random() * this.height);
+
+  };
+
   this.toString = function() {
     return _(this.terrain).map(function(row) {
       return row.join("") + "\n";
@@ -44,40 +54,35 @@ function Map() {
   };
 };
 
+var map = new Map();
+
 // registering event
 io.sockets.on('connection', function (socket) {
 	socket.on('start', function(name){
 		console.log('in start');
 
-		// Set users character
-		if (name == null) {
-			character = "#"
-		} else {
-			character = name[0]
-		}
-
 		// Setup player and attach to users scope through sockets.
-		socket.player = new Player(name, character);
+		socket.snake = new Snake(name);
+    map.placeSnake(socket.snake);
 
 		// Broadcast sends message to everyone but the new user.
 		socket.broadcast.emit('announce', socket.player.name + ' entered');
 	});
 	
 	socket.on('say', function(key) {
-    movement = {
+    var movement = {
       'left': {x: -1, y: 0},
       'up':   {x: 0, y: -1},
       'right':{x: 1, y: 0},
       'down': {x: 0, y: 1}
-    }[key]
+    }[key];
 
     // Send shit to everyone but yourself.
     // socket.broadcast.emit('announce', 'This is a broadcast'); 
 
-    // Sends the data back to all clients connected.
-    // io.sockets.emit('move', movement, socket.player.character);
+    map.moveSnake(socket.player.charater, movement);
 
-    io.sockets.emit('move', movement, (new Map()).toString());
+    io.sockets.emit('move', movement, map.toString());
 
   });
 });
