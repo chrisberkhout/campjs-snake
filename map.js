@@ -17,14 +17,20 @@ module.exports = function() {
 	this.placeSnake = function(snake) {
 		var x = parseInt(Math.random() * this.width);
 		var y = parseInt(Math.random() * this.height);
-		snake.move({x: x,y: y})
+		snake.setPos({x: x,y: y})
 		this.terrain[snake.y][snake.x] = snake.character;
 	};
 
 	this.moveSnake = function(snake, movement) {
 		x = snake.x + movement.x;
+    if (x >= this.width) { x = 0; }
+    if (x < 0) { x = this.width - 1; }
+
 		y = snake.y + movement.y;
-		snake.move({x: x, y: y});
+    if (y >= this.height) { y = 0; }
+    if (y < 0) { y = this.height - 1; }
+
+		snake.setPos({x: x, y: y});
 		this.terrain[snake.y][snake.x] = snake.character;
 	};
 

@@ -27,7 +27,7 @@ function Snake(name) {
 	this.name = name;
 	this.character = this.name === null ? '#' : this.name[0];
 
-	this.move = function(pos) {
+	this.setPos = function(pos) {
 		this.x = pos.x;
 		this.y = pos.y;
 	};
