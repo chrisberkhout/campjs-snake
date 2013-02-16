@@ -29,6 +29,10 @@ function Snake(name) {
   this.positions = [];
   this.head = function() { return _(this.positions).last(); };
   this.length = 1;
+  this.lastDirection = {
+    x: parseInt(Math.random() * 3) - 1,
+    y: parseInt(Math.random() * 3) - 1
+  };
 
 	this.setPos = function(pos) {
 		this.x = pos.x;
@@ -40,9 +44,18 @@ function Snake(name) {
 };
 
 
+var autoMover = function() {
+  _(map.snakes).each(function(snake) {
+    map.moveSnake(snake, snake.lastDirection)
+  });
+  io.sockets.emit('redraw', map.toString());
+};
+setInterval(autoMover, 300);
+
 
 // registering event
 io.sockets.on('connection', function (socket) {
+
 	socket.on('start', function(name){
 		console.log('in start');
 
@@ -55,13 +68,6 @@ io.sockets.on('connection', function (socket) {
 		// Broadcast sends message to everyone but the new user.
 		socket.broadcast.emit('announce', socket.snake.name + ' entered');
 
-    var autoMover = function() {
-      _(map.snakes).each(function(snake) {
-        map.moveSnake(snake, { x: 1, y: 0 })
-      });
-      io.sockets.emit('redraw', map.toString());
-    };
-    setInterval(autoMover, 1000);
 	});
 	
 	socket.on('move', function(key) {
@@ -73,6 +79,7 @@ io.sockets.on('connection', function (socket) {
 		}[key];
 
     if (socket.snake !== undefined && movement !== undefined) {
+      socket.snake.lastDirection = movement;
       map.moveSnake(socket.snake, movement);
     } else {
       console.log("movement triggered, but don't have stuff");
