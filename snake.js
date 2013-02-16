@@ -2,6 +2,7 @@
 var app = require('http').createServer(handler)
 	, io = require('socket.io').listen(app)
 	, fs = require('fs');
+var _ = require('underscore');
 
 app.listen(8124);
 
@@ -23,18 +24,24 @@ function Player(name,character) {
 	this.character = character;
 };
 
-function Map(){
+function Map() {
 	this.width = 80;
 	this.height = 40;
 
-	// Create a map
-	for(int i=0; i=<this.width; i++) {
-		for(int i=0; i=<this.width; i++) {
+  this.terrain = [];
+  for (i=0; i<this.height; i++) {
+    var row = [];
+    for (j=0; j<this.width; j++) {
+      row[j] = ".";
+    }
+    this.terrain[i] = row;
+  }
 
-		};
-	};
-
-	return ['.','.','.','.','.','.','.','.']
+  this.toString = function() {
+    return _(this.terrain).map(function(row) {
+      return row.join("") + "\n";
+    }).join("");
+  };
 };
 
 // registering event
@@ -57,19 +64,20 @@ io.sockets.on('connection', function (socket) {
 	});
 	
 	socket.on('say', function(key) {
-	   movement = {
-		   'left': {x: -1, y: 0},
-		   'up':   {x: 0, y: -1},
-		   'right':{x: 1, y: 0},
-		   'down': {x: 0, y: 1}
-	   }[key]
-	   
-	   // Send shit to everyone but yourself.
-       // socket.broadcast.emit('announce', 'This is a broadcast'); 
+    movement = {
+      'left': {x: -1, y: 0},
+      'up':   {x: 0, y: -1},
+      'right':{x: 1, y: 0},
+      'down': {x: 0, y: 1}
+    }[key]
 
-	   // Sends the data back to all clients connected.
-       // io.sockets.emit('move', movement, socket.player.character);
+    // Send shit to everyone but yourself.
+    // socket.broadcast.emit('announce', 'This is a broadcast'); 
 
-       io.sockets.emit('move', movement, ".......");
-   });
+    // Sends the data back to all clients connected.
+    // io.sockets.emit('move', movement, socket.player.character);
+
+    io.sockets.emit('move', movement, (new Map()).terrain);
+
+  });
 });
