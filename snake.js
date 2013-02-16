@@ -28,7 +28,7 @@ function Snake(name) {
 	this.character = this.name === null ? '#' : this.name[0];
   this.positions = [];
   this.head = function() { return _(this.positions).last(); };
-  this.length = 5;
+  this.length = 1;
 
 	this.setPos = function(pos) {
 		this.x = pos.x;

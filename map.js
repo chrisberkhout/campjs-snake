@@ -41,7 +41,13 @@ module.exports = function() {
     if (y >= this.height) { y = 0; }
     if (y < 0) { y = this.height - 1; }
 
-		snake.setPos({x: x, y: y});
+    var newPos = {x: x, y: y};
+    if (_(newPos).isEqual(this.food)) {
+      snake.length++;
+      this.placeFood();
+    }
+    
+		snake.setPos(newPos);
 	};
 
   this.placeFood = function() {
