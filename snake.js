@@ -3,6 +3,10 @@ var app = require('http').createServer(handler)
 	, io = require('socket.io').listen(app)
 	, fs = require('fs');
 var _ = require('underscore');
+var Map = require('./map.js');
+
+
+var map = new Map();
 
 app.listen(8124);
 
@@ -29,41 +33,7 @@ function Snake(name) {
 	};
 };
 
-function Map() {
-	this.width = 80;
-	this.height = 40;
 
-	this.terrain = [];
-	for (i=0; i<this.height; i++) {
-		var row = [];
-		for (j=0; j<this.width; j++) {
-			row[j] = ".";
-		}
-		this.terrain[i] = row;
-	}
-
-	this.placeSnake = function(snake) {
-		var x = parseInt(Math.random() * this.width);
-		var y = parseInt(Math.random() * this.height);
-		snake.move({x: x,y: y})
-		this.terrain[snake.y][snake.x] = snake.character;
-	};
-
-	this.moveSnake = function(snake, movement) {
-		x = snake.x + movement.x;
-		y = snake.y + movement.y;
-		snake.move({x: x, y: y});
-		this.terrain[snake.y][snake.x] = snake.character;
-	};
-
-	this.toString = function() {
-		return _(this.terrain).map(function(row) {
-			return row.join("") + "\n";
-		}).join("");
-	};
-};
-
-var map = new Map();
 
 // registering event
 io.sockets.on('connection', function (socket) {
@@ -91,7 +61,11 @@ io.sockets.on('connection', function (socket) {
 
 		// Move the snake with the keyboard
 
-	map.moveSnake(socket.snake, movement);
+    if (socket.snake !== undefined && movement !== undefined) {
+      map.moveSnake(socket.snake, movement);
+    } else {
+      console.log("movement triggered, but don't have stuff");
+    };
 
     io.sockets.emit('move', movement, map.toString());
 
