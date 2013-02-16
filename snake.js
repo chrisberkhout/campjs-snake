@@ -77,7 +77,7 @@ io.sockets.on('connection', function (socket) {
     // Sends the data back to all clients connected.
     // io.sockets.emit('move', movement, socket.player.character);
 
-    io.sockets.emit('move', movement, (new Map()).terrain);
+    io.sockets.emit('move', movement, (new Map()).toString());
 
   });
 });
