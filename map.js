@@ -51,10 +51,12 @@ module.exports = function(io) {
 			};
 		});
 
-		var that = this;
 		// Check if we ate any of the foods		
+		var that = this; // Java script scope hack.
 		_(this.food).each(function(pos) {
 			if(_.isEqual(newPos, pos)){
+				// need to remove the correct food from the array
+				that.food =  _.reject(that.food, function(f) { return _.isEqual(newPos, f); });
 				snake.length++;
 				that.placeFood();
 			};
