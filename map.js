@@ -149,6 +149,8 @@ module.exports = function(io) {
 
     if (leader !== undefined) {
       io.sockets.emit('score', leader.name+" is leading with a score of "+leader.score);
+    } else {
+      io.sockets.emit('score', "");
     }
 
 		return _(result).map(function(row) {
