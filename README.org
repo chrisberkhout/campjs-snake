@@ -17,3 +17,8 @@ OR
 refresh
 : node-inspector
 refresh
+
+
+** Improvements
+
+Send as text not the whole HTML

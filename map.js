@@ -149,7 +149,7 @@ module.exports = function(io) {
 		// Render multiple snakes, one per person
 		_(this.snakes).each(function(snake) {
 			_(snake.positions).each(function(pos) {
-				result[pos.y][pos.x] = "<span style='color:" + snake.color + "'>" + snake.character + "</span>";
+				result[pos.y][pos.x] = "<b style='color:" + snake.color + "'>" + snake.character + "</b>";
 			});
 		});
 
@@ -174,7 +174,7 @@ module.exports = function(io) {
 	// Auto move snakes on the map
 	this.startAutoMoving = function(opts) {
 		var that = this;
-		var interval = 300; // 0.3 seconds
+		var interval = 250; // 0.3 seconds
 		var autoMover = function() {
 			_(that.snakes).each(function(snake) {
 				if(snake.alive || snake.zombie){
