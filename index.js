@@ -3,7 +3,7 @@ var app = require('http').createServer(requestHandler),
 	  io = require('socket.io').listen(app),
 	  fs = require('fs'),
     _ = require('underscore'),
-    map = new (require('./map.js'))(),
+    map = new (require('./map.js'))(io),
     Snake = require('./snake.js');
 
 app.listen(8124);
@@ -51,7 +51,9 @@ io.sockets.on('connection', function (socket) {
 
     if (socket.snake !== undefined && movement !== undefined) {
       socket.snake.lastDirection = movement;
-      map.moveSnake(socket.snake, movement);
+      
+		map.moveSnake(socket.snake, movement);
+			
     } else {
       console.log("movement triggered, but don't have stuff");
     };

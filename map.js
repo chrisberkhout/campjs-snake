@@ -1,6 +1,6 @@
 var _ = require('underscore');
 
-module.exports = function() {
+module.exports = function(io) {
 
 	this.randomPos = function() {
 		return {
@@ -44,11 +44,9 @@ module.exports = function() {
 		}).flatten().value();
 
 		// Check if we are going to hit another snake
-		// _.isEqual(snakeBits[0], {x: 71, y: 28})
-		
 		_(snakeBits).each(function(bit) {
 			if(_.isEqual(newPos, bit)){
-				console.log("you hit something");
+				io.sockets.emit('announce', "You hit another snake!!!");		
 			};
 		});
 
@@ -58,6 +56,7 @@ module.exports = function() {
 		}
 		
 		snake.setPos(newPos);
+		return 1;
 	};
 
 	this.placeFood = function() {
