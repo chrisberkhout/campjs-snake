@@ -8,6 +8,9 @@ Multi player snake in node.js
 : git remote add chris file:///home/map7/campjs/snake.chris
 : git pull chris master
 
+OR
+~/campjs/snake (master)% g remote add usb-mick /media/data/snake.mick
+~/campjs/snake (master)% g remote add usb-chris /media/data/snake.chris
 ** node inspector
 
 : node --debug index.js
