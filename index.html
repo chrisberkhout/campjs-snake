@@ -23,9 +23,9 @@
 	  });
 	  
 	  socket.on('announce', function(data) {
-      var li = document.createElement("li");
-      li.innerHTML = data;
-      document.getElementById("broadcast").appendChild(li);
+      var msg = "<li>"+data+"</li>\n"
+      var newInnerHTML = msg + document.getElementById("broadcast").innerHTML;
+      document.getElementById("broadcast").innerHTML = newInnerHTML;
 	  });
 
 	  socket.on('redraw', function(map) {
