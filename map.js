@@ -55,60 +55,57 @@ module.exports = function(io) {
 		// Check if we hit another snake
 		if(snakeBits.length > 1){
 			_(snakeBits).each(function(bit) {
-				if(_.isEqual(newPos, bit)){
+				if(_.isEqual(newPos, bit)){ // Has hit
 					io.sockets.emit('announce', "You hit another snake! You are now food.");
 
 					// disable snake
 					snake.alive = false;
+				};
+			});
+			
+			if(snake.alive === false) {
+				random = parseInt(Math.random() * 3);
+
+				switch(random){
+				case 0:	// Corpse
+					snake.character = "X";
+					snake.zombie = false;
+					break;
+
+				case 1:	// Zombie (Still automoves)
+					snake.zombie = true;
+					snake.character = "Z";
+					break;
 					
-					// turn snake into food
-					_(snake).each(function(s){
-						snake.alive = false;
-
-						random = parseInt(Math.random() * 3);
-
-						switch(random){
-							case 0:	// Corpse
-							snake.character = "X";
-							snake.zombie = false;
-							break;
-
-							case 1:	// Zombie (Still automoves)
-							snake.zombie = true;
-							snake.character = "Z";
-							break;
-							
-							case 2: // Food
-							_(snake.positions.each).each(function(pos){
-								
-								// Create food at position
-								// that.food.push(pos);
-
-							});
-							that.placeFood();
-							// Remove snake altogether
-							that.snakes = _.reject(that.snakes, function(s){
-								return _.isEqual(snake, s);
-							});
-							break;
-						};
-
+				case 2: // Food
+					_(snake.positions).each(function(bit){
+						// Create food at position
+						that.food.push(bit);  // doesn't work
 					});
+					// that.placeFood();
+
+					// Remove snake altogether
+					that.snakes = _.reject(that.snakes, function(s){
+						return _.isEqual(snake, s);
+					});
+					break;
+				};
+			};
+		};
+		
+		// Check if we ate any of the foods
+		if(snake.alive){
+			_(this.food).each(function(pos) {
+				if(_.isEqual(newPos, pos)){
+					// remove the correct food from the array
+					that.food =  _.reject(that.food, function(f) { return _.isEqual(newPos, f); });
+					snake.length++;   // Increase players snake
+					that.placeFood(); // Place a new food item randomly on the map.
 				};
 			});
 		};
 		
-		// Check if we ate any of the foods		
-		_(this.food).each(function(pos) {
-			if(_.isEqual(newPos, pos)){
-				// remove the correct food from the array
-				that.food =  _.reject(that.food, function(f) { return _.isEqual(newPos, f); });
-				snake.length++;   // Increase players snake
-				that.placeFood(); // Place a new food item randomly on the map.
-			};
-		});
-		
-		snake.setPos(newPos);
+		snake.setPos(newPos); // MOVE snake
 	}; // moveSnake
 
 	this.placeFood = function() {
