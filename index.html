@@ -22,6 +22,10 @@
 	  	socket.emit('start', prompt('Enter player name'));
 	  });
 	  
+	  socket.on('score', function(data) {
+      document.getElementById("score").innerHTML = data;
+	  });
+
 	  socket.on('announce', function(data) {
       var msg = "<li>"+data+"</li>\n"
       var newInnerHTML = msg + document.getElementById("broadcast").innerHTML;
@@ -49,6 +53,7 @@
   </head>
 
   <body onkeyup="updateCode(event)">
+	<div id="score"></div>
 	<div id="ground"></div>
 	<ul id="broadcast"></ul>
   </body>

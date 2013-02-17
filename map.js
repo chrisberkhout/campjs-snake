@@ -128,6 +128,17 @@ module.exports = function(io) {
 			});
 		});
 
+    var leader = _(this.snakes).chain()
+      .filter(function(s) { return s.alive; })
+      .map(function(s) { return { name: s.name, score: s.positions.length }; })
+      .sortBy('score')
+      .reverse()
+      .first().value();
+
+    if (leader !== undefined) {
+      io.sockets.emit('score', leader.name+" is leading with a score of "+leader.score);
+    }
+
 		return _(result).map(function(row) {
 			return row.join("") + "<br />";
 		}).join("");
