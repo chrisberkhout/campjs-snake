@@ -2,6 +2,7 @@ var _ = require('underscore');
 
 module.exports = function(io) {
 
+	// Calculate a random position used for food & snakes.
 	this.randomPos = function() {
 		return {
 			x: parseInt(Math.random() * this.width),
@@ -9,11 +10,13 @@ module.exports = function(io) {
 		};
 	};
 
+	// Dimensions of play area
 	this.width = 80;
 	this.height = 40;
 
 	var that = this; // that makes the current object accessible from an inner function
 	this.terrain = function() {
+		// Range starts at 0 if no min is given.
 		return _.range(that.height).map(function() {
 			return _.range(that.width).map(function() { return "."; });
 		});
@@ -22,9 +25,10 @@ module.exports = function(io) {
 	this.snakes = [];
 	this.food = [];
 
+	// Place a new snake (ie: new player)
 	this.placeSnake = function(snake) {
-		this.snakes.push(snake);
-		snake.setPos(this.randomPos());
+		this.snakes.push(snake);        // Add a snake to the snakes array
+		snake.setPos(this.randomPos()); // Place randomly on the map
 	};
 
 	this.moveSnake = function(snake, movement) {
