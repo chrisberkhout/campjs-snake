@@ -55,10 +55,10 @@ module.exports = function(io) {
 		var that = this; // Java script scope hack.
 		_(this.food).each(function(pos) {
 			if(_.isEqual(newPos, pos)){
-				// need to remove the correct food from the array
+				// remove the correct food from the array
 				that.food =  _.reject(that.food, function(f) { return _.isEqual(newPos, f); });
-				snake.length++;
-				that.placeFood();
+				snake.length++;   // Increase players snake
+				that.placeFood(); // Place a new food item randomly on the map.
 			};
 		});
 		
