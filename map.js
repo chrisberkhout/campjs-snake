@@ -12,22 +12,11 @@ module.exports = function() {
 	this.width = 80;
 	this.height = 40;
 
-  var that = this;
+  var that = this; // that makes the current object accessible from an inner function
 	this.terrain = function() {
-
     return _.range(that.height).map(function() {
       return _.range(that.width).map(function() { return "."; });
     });
-
-    var result = [];
-    for (i=0; i<that.height; i++) {
-      var row = [];
-      for (j=0; j<that.width; j++) {
-        row[j] = ".";
-      }
-      result[i] = row;
-    }
-    return result;
   };
 
   this.snakes = [];
@@ -76,14 +65,14 @@ module.exports = function() {
 		}).join("");
 	};
 
-  this.startAutoMoving = function(redrawCallback) {
+  this.startAutoMoving = function(opts) {
     var that = this;
     var interval = 300;
     var autoMover = function() {
       _(that.snakes).each(function(snake) {
         that.moveSnake(snake, snake.lastDirection)
       });
-      redrawCallback();
+      opts.afterEachMove();
     };
     setInterval(autoMover, interval);
   };

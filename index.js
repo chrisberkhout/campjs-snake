@@ -22,7 +22,9 @@ function requestHandler(req, res) {
   });
 };
 
-map.startAutoMoving(function() { io.sockets.emit('redraw', map.toString()); });
+map.startAutoMoving({
+  afterEachMove: function() { io.sockets.emit('redraw', map.toString()) }
+});
 
 io.sockets.on('connection', function (socket) {
 
