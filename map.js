@@ -71,5 +71,17 @@ module.exports = function() {
 		}).join("");
 	};
 
+  this.startAutoMoving = function(redrawCallback) {
+    var that = this;
+    var interval = 300;
+    var autoMover = function() {
+      _(that.snakes).each(function(snake) {
+        that.moveSnake(snake, snake.lastDirection)
+      });
+      redrawCallback();
+    };
+    setInterval(autoMover, interval);
+  };
+
 };
 
