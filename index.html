@@ -23,8 +23,9 @@
 	  });
 	  
 	  socket.on('announce', function(data) {
-	  <!-- Set callback data to an element. -->
-	  	document.getElementById("broadcast").innerHTML=data;
+      var li = document.createElement("li");
+      li.innerHTML = data;
+      document.getElementById("broadcast").appendChild(li);
 	  });
 
 	  socket.on('redraw', function(map) {
@@ -48,8 +49,8 @@
   </head>
 
   <body onkeyup="updateCode(event)">
-	<div id="broadcast" ></div>
-	<div id="ground" ></div>
+	<div id="ground"></div>
+	<ul id="broadcast"></ul>
   </body>
 
 </html>

@@ -56,7 +56,6 @@ module.exports = function(io) {
 		if(snakeBits.length > 1){
 			_(snakeBits).each(function(bit) {
 				if(_.isEqual(newPos, bit)){ // Has hit
-					io.sockets.emit('announce', "You hit another snake! You are now food.");
 
 					// disable snake
 					snake.alive = false;
@@ -70,11 +69,13 @@ module.exports = function(io) {
 				case 0:	// Corpse
 					snake.character = "X";
 					snake.zombie = false;
+					io.sockets.emit('announce', snake.name+" hit something and became a corpse!");
 					break;
 
 				case 1:	// Zombie (Still automoves)
 					snake.zombie = true;
 					snake.character = "Z";
+					io.sockets.emit('announce', snake.name+" hit something and became a zombie!");
 					break;
 					
 				case 2: // Food
@@ -87,6 +88,7 @@ module.exports = function(io) {
 					that.snakes = _.reject(that.snakes, function(s){
 						return _.isEqual(snake, s);
 					});
+					io.sockets.emit('announce', snake.name+" hit something and became food!");
 					break;
 				};
 			};
