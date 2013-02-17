@@ -14,6 +14,11 @@ module.exports = function() {
 
   var that = this;
 	this.terrain = function() {
+
+    return _.range(that.height).map(function() {
+      return _.range(that.width).map(function() { return "."; });
+    });
+
     var result = [];
     for (i=0; i<that.height; i++) {
       var row = [];
