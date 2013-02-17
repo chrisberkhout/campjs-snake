@@ -28,6 +28,7 @@ map.startAutoMoving({
 
 io.sockets.on('connection', function (socket) {
 
+
 	socket.on('start', function(name){
 
 		// Setup snake and attach to users scope through sockets.
@@ -38,6 +39,12 @@ io.sockets.on('connection', function (socket) {
 
 		// Broadcast sends message to everyone but the current user.
 		socket.broadcast.emit('announce', socket.snake.name + ' entered');
+
+    socket.on('disconnect', function() {
+      map.snakes = _(map.snakes).reject(function(s) {
+        return _.isEqual(s, socket.snake);
+      });
+    });
 
 	});
 	
