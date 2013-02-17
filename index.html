@@ -37,6 +37,10 @@
 	  	document.getElementById("ground").innerHTML="<div>" + map + "</div>";
 	  });
 
+	  prevent = function(e) {
+	    e.preventDefault();
+	  };
+
 	  <!-- Called on key up -->
       updateCode = function(e) {
 	    var dir = [];
@@ -52,7 +56,7 @@
 	</script>
   </head>
 
-  <body onkeyup="updateCode(event)">
+  <body onkeydown="prevent(event)" onkeyup="updateCode(event)">
 	<div id="score"></div>
 	<div id="ground"></div>
 	<ul id="broadcast"></ul>

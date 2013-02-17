@@ -35,6 +35,18 @@ module.exports = function(io) {
 
 		var that = this; // Java script scope hack.
 
+
+		// Invincible mode
+		if(snake.invincible){
+			if(snake.color === 'red'){
+				snake.color = 'orange';
+			}else{
+				snake.color = 'red';
+			};
+		}else{
+			snake.color = snake.realcolor;
+		};
+
 		// Nice and simple edge wrapping
 		x = snake.head().x + movement.x;
 		if (x >= this.width) { x = 0; }
@@ -53,7 +65,7 @@ module.exports = function(io) {
 		}).flatten().value();
 
 		// Check if we hit another snake
-		if(snakeBits.length > 1){
+		if(snakeBits.length > 1 && snake.invincible === false){
 			_(snakeBits).each(function(bit) {
 				if(_.isEqual(newPos, bit)){ // Has hit
 
