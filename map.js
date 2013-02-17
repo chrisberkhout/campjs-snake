@@ -32,25 +32,28 @@ module.exports = function(io) {
 	};
 
 	this.moveSnake = function(snake, movement) {
-		if(snake.alive){
-			// Nice and simple edge wrapping
-			x = snake.head().x + movement.x;
-			if (x >= this.width) { x = 0; }
-			if (x < 0) { x = this.width - 1; }
 
-			y = snake.head().y + movement.y;
-			if (y >= this.height) { y = 0; }
-			if (y < 0) { y = this.height - 1; }
+		var that = this; // Java script scope hack.
 
-			// Create the next position for snake
-			var newPos = {x: x, y: y};
+		// Nice and simple edge wrapping
+		x = snake.head().x + movement.x;
+		if (x >= this.width) { x = 0; }
+		if (x < 0) { x = this.width - 1; }
 
-			// Flattern all snake bits into a long array of hash coordinates
-			snakeBits = _(this.snakes).chain().map(function(snake) {
-				return snake.positions 
-			}).flatten().value();
+		y = snake.head().y + movement.y;
+		if (y >= this.height) { y = 0; }
+		if (y < 0) { y = this.height - 1; }
 
-			// Check if we hit another snake
+		// Create the next position for snake
+		var newPos = {x: x, y: y};
+
+		// Flattern all snake bits into a long array of hash coordinates
+		snakeBits = _(this.snakes).chain().map(function(snake) {
+			return snake.positions 
+		}).flatten().value();
+
+		// Check if we hit another snake
+		if(snakeBits.length > 1){
 			_(snakeBits).each(function(bit) {
 				if(_.isEqual(newPos, bit)){
 					io.sockets.emit('announce', "You hit another snake! You are now food.");
@@ -60,24 +63,52 @@ module.exports = function(io) {
 					
 					// turn snake into food
 					_(snake).each(function(s){
-						snake.character = "X";
+						snake.alive = false;
+
+						random = 2;parseInt(Math.random() * 3);
+
+						switch(random){
+							case 0:	// Corpse
+							snake.character = "X";
+							snake.zombie = false;
+							break;
+
+							case 1:	// Zombie (Still automoves)
+							snake.zombie = true;
+							snake.character = "Z";
+							break;
+							
+							case 2: // Food
+							_(snake.positions.each).each(function(pos){
+								
+								// Create food at position
+								// that.food.push(pos);
+
+							});
+							that.placeFood();
+							// Remove snake altogether
+							that.snakes = _.reject(that.snakes, function(s){
+								return _.isEqual(snake, s);
+							});
+							break;
+						};
+
 					});
 				};
 			});
-
-			// Check if we ate any of the foods		
-			var that = this; // Java script scope hack.
-			_(this.food).each(function(pos) {
-				if(_.isEqual(newPos, pos)){
-					// remove the correct food from the array
-					that.food =  _.reject(that.food, function(f) { return _.isEqual(newPos, f); });
-					snake.length++;   // Increase players snake
-					that.placeFood(); // Place a new food item randomly on the map.
-				};
-			});
-			
-			snake.setPos(newPos);
 		};
+		
+		// Check if we ate any of the foods		
+		_(this.food).each(function(pos) {
+			if(_.isEqual(newPos, pos)){
+				// remove the correct food from the array
+				that.food =  _.reject(that.food, function(f) { return _.isEqual(newPos, f); });
+				snake.length++;   // Increase players snake
+				that.placeFood(); // Place a new food item randomly on the map.
+			};
+		});
+		
+		snake.setPos(newPos);
 	}; // moveSnake
 
 	this.placeFood = function() {
@@ -111,7 +142,9 @@ module.exports = function(io) {
 		var interval = 300; // 0.3 seconds
 		var autoMover = function() {
 			_(that.snakes).each(function(snake) {
-				that.moveSnake(snake, snake.lastDirection);
+				if(snake.alive || snake.zombie){
+					that.moveSnake(snake, snake.lastDirection);
+				};
 			});
 			opts.afterEachMove();
 		};

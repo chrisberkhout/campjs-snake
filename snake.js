@@ -10,6 +10,7 @@ module.exports = function(name) {
 	this.length = 1;
 	//this.color = 'green';
 	this.alive = true;
+	this.zombie = false;
 
 	// Remember last direction for auto mover.
 	this.lastDirection = {
