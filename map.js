@@ -65,7 +65,7 @@ module.exports = function(io) {
 					_(snake).each(function(s){
 						snake.alive = false;
 
-						random = 2;parseInt(Math.random() * 3);
+						random = parseInt(Math.random() * 3);
 
 						switch(random){
 							case 0:	// Corpse
