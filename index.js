@@ -41,9 +41,10 @@ io.sockets.on('connection', function (socket) {
 		socket.broadcast.emit('announce', socket.snake.name + ' entered');
 
     socket.on('disconnect', function() {
-      map.snakes = _(map.snakes).reject(function(s) {
-        return _.isEqual(s, socket.snake);
-      });
+		socket.snake.character = "X";
+		socket.snake.zombie = false;
+		socket.snake.alive = false;
+		io.sockets.emit('announce', socket.snake.name+" left the game and became a corpse!");
     });
 
 	});
