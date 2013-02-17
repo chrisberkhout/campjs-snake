@@ -36,6 +36,22 @@ module.exports = function() {
 		if (y < 0) { y = this.height - 1; }
 
 		var newPos = {x: x, y: y};
+
+
+		// Flattern all snake bits into a long array of hash coordinates
+		snakeBits = _(this.snakes).chain().map(function(snake) {
+			return snake.positions 
+		}).flatten().value();
+
+		// Check if we are going to hit another snake
+		// _.isEqual(snakeBits[0], {x: 71, y: 28})
+		
+		_(snakeBits).each(function(bit) {
+			if(_.isEqual(newPos, bit)){
+				console.log("you hit something");
+			};
+		});
+
 		if (_(newPos).isEqual(this.food)) {
 			snake.length++;
 			this.placeFood();

@@ -1,3 +1,16 @@
 * README
 
 Multi player snake in node.js
+
+** Cloning at campjs
+
+
+: git remote add chris file:///home/map7/campjs/snake.chris
+: git pull chris master
+
+** node inspector
+
+: node --debug index.js
+refresh
+: node-inspector
+refresh
