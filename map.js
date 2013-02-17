@@ -82,7 +82,6 @@ module.exports = function(io) {
 						// Create food at position
 						that.food.push(bit);  // doesn't work
 					});
-					// that.placeFood();
 
 					// Remove snake altogether
 					that.snakes = _.reject(that.snakes, function(s){
