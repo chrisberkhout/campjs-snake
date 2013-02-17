@@ -24,6 +24,7 @@ module.exports = function(io) {
 
 	this.snakes = [];
 	this.food = [];
+	this.invinciblePos = this.randomPos();
 
 	// Place a new snake (ie: new player)
 	this.placeSnake = function(snake) {
@@ -121,6 +122,10 @@ module.exports = function(io) {
 		snake.setPos(newPos); // MOVE snake
 	}; // moveSnake
 
+	this.placeInvincible = function() {
+		this.invinciblePos = this.randomPos();
+	};
+
 	this.placeFood = function() {
 		this.food.push(this.randomPos());
 	};
@@ -132,6 +137,9 @@ module.exports = function(io) {
 		_(this.food).each(function(pos) {
 			result[pos.y][pos.x] = '+';
 		});
+
+		// Invincible
+		result[this.invinciblePos.y][this.invinciblePos.x] = "*";
 
 		// Render multiple snakes, one per person
 		_(this.snakes).each(function(snake) {
