@@ -63,7 +63,7 @@ module.exports = function(io) {
 				};
 			});
 			
-			if(snake.alive === false) {
+			if(snake.alive === false && snake.zombie !== true) {
 				random = parseInt(Math.random() * 3);
 
 				switch(random){
@@ -122,15 +122,14 @@ module.exports = function(io) {
 		// Render multiple snakes, one per person
 		_(this.snakes).each(function(snake) {
 			_(snake.positions).each(function(pos) {
-				result[pos.y][pos.x] = snake.character;
+				result[pos.y][pos.x] = "<span style='color:" + snake.color + "'>" + snake.character + "</span>";
 			});
 		});
 
 		return _(result).map(function(row) {
-			return row.join("") + "\n";
+			return row.join("") + "<br />";
 		}).join("");
 	};
-
 
 	// Auto move snakes on the map
 	this.startAutoMoving = function(opts) {
@@ -146,6 +145,5 @@ module.exports = function(io) {
 		};
 		setInterval(autoMover, interval);
 	};
-
 };
 
