@@ -53,14 +53,15 @@ module.exports = function(io) {
 			// Check if we hit another snake
 			_(snakeBits).each(function(bit) {
 				if(_.isEqual(newPos, bit)){
-					io.sockets.emit('announce', "You hit another snake! You are now snake food.");
+					io.sockets.emit('announce', "You hit another snake! You are now food.");
 
 					// disable snake
 					snake.alive = false;
 					
 					// turn snake into food
-
-
+					_(snake).each(function(s){
+						snake.character = "X";
+					});
 				};
 			});
 
@@ -77,7 +78,7 @@ module.exports = function(io) {
 			
 			snake.setPos(newPos);
 		};
-	};
+	}; // moveSnake
 
 	this.placeFood = function() {
 		this.food.push(this.randomPos());
