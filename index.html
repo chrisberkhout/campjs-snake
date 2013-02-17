@@ -5,6 +5,9 @@
   <style>
     #ground {
       text-align: center;
+	  font-family: courier;
+	  font-size: 10pt;
+	  font-weight: bold;
     }
   </style>
 	<script src="/socket.io/socket.io.js"></script>
@@ -26,7 +29,7 @@
 
 	  socket.on('redraw', function(map) {
 	  <!-- Set callback movement to an element. -->
-	  	document.getElementById("ground").innerHTML="<pre>" + map + "</pre>";
+	  	document.getElementById("ground").innerHTML="<div>" + map + "</div>";
 	  });
 
 	  <!-- Called on key up -->

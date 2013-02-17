@@ -12,6 +12,15 @@ module.exports = function(name) {
 	this.alive = true;
 	this.zombie = false;
 
+	this.randomColor = function(){
+		colors=['#1f77b4','#ff7f0e','#2ca02c','#d62728','#9467bd','#8c564b','#e377c2','#7f7f7f','#bcbd22','#17becf']
+
+		return colors[parseInt(Math.random() * colors.length)];
+	}
+
+	this.color = this.randomColor();
+
+
 	// Remember last direction for auto mover.
 	this.lastDirection = {
 		x: parseInt(Math.random() * 3) - 1,

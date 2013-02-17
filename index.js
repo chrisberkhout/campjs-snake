@@ -49,14 +49,16 @@ io.sockets.on('connection', function (socket) {
 			'down': {x: 0, y: 1}
 		}[key];
 		
-		if(socket.snake.alive){
-			if (socket.snake !== undefined && movement !== undefined) {
+
+		if (socket.snake !== undefined && movement !== undefined) {
+			if(socket.snake.alive){
 				socket.snake.lastDirection = movement; // Remember last movement for automover
 				map.moveSnake(socket.snake, movement);
-			} else {
-				console.log("movement triggered, but don't have stuff");
 			};
+		} else {
+			console.log("movement triggered, but don't have stuff");
 		};
+
 		io.sockets.emit('redraw', map.toString());
 
 	});
