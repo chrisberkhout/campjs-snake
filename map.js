@@ -20,6 +20,7 @@ module.exports = function(io) {
 	};
 
 	this.snakes = [];
+	this.food = [];
 
 	this.placeSnake = function(snake) {
 		this.snakes.push(snake);
@@ -43,32 +44,39 @@ module.exports = function(io) {
 			return snake.positions 
 		}).flatten().value();
 
-		// Check if we are going to hit another snake
+		// Check if we hit another snake
 		_(snakeBits).each(function(bit) {
 			if(_.isEqual(newPos, bit)){
 				io.sockets.emit('announce', "You hit another snake!!!");		
 			};
 		});
 
-		if (_(newPos).isEqual(this.food)) {
-			snake.length++;
-			this.placeFood();
-		}
+		var that = this;
+		// Check if we ate any of the foods		
+		_(this.food).each(function(pos) {
+			if(_.isEqual(newPos, pos)){
+				snake.length++;
+				that.placeFood();
+			};
+		});
 		
 		snake.setPos(newPos);
 		return 1;
 	};
 
 	this.placeFood = function() {
-		this.food = this.randomPos();
+		this.food.push(this.randomPos());
 	};
 
 	this.toString = function() {
 		var result = this.terrain();
 
-		if (this.food !== undefined) {
-			result[this.food.y][this.food.x] = '+';
-		}
+		// Multi-food
+		_(this.food).each(function(pos) {
+			result[pos.y][pos.x] = '+';
+		});
+
+		// Render multiple snakes, one per person
 		_(this.snakes).each(function(snake) {
 			_(snake.positions).each(function(pos) {
 				result[pos.y][pos.x] = snake.character;
