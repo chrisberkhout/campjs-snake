@@ -107,7 +107,7 @@ module.exports = function(io) {
 			};
 		};
 		
-		// Check if we ate any of the foods
+		// Check if we ate any of the foods or invincible tokens
 		if(snake.alive){
 			_(this.food).each(function(pos) {
 				if(_.isEqual(newPos, pos)){
@@ -117,6 +117,11 @@ module.exports = function(io) {
 					that.placeFood(); // Place a new food item randomly on the map.
 				};
 			});
+
+			if(_.isEqual(newPos, that.invinciblePos)){
+				that.placeInvincible();
+				snake.invincible = true;
+			};
 		};
 		
 		snake.setPos(newPos); // MOVE snake
