@@ -2,12 +2,16 @@ var _ = require('underscore');
 
 module.exports = function(name) {
 
+	// Setup some attributes for the snake.
 	this.name = name;
 	this.character = this.name === null ? '#' : this.name[0];
 	this.positions = [];
 	this.head = function() { return _(this.positions).last(); };
 	this.length = 1;
+	//this.color = 'green';
+	this.alive = true;
 
+	// Remember last direction for auto mover.
 	this.lastDirection = {
 		x: parseInt(Math.random() * 3) - 1,
 		y: parseInt(Math.random() * 3) - 1

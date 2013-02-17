@@ -50,10 +50,8 @@ io.sockets.on('connection', function (socket) {
 		}[key];
 
 		if (socket.snake !== undefined && movement !== undefined) {
-			socket.snake.lastDirection = movement;
-			
+			socket.snake.lastDirection = movement; // Remember last movement for automover
 			map.moveSnake(socket.snake, movement);
-			
 		} else {
 			console.log("movement triggered, but don't have stuff");
 		};
