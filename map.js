@@ -28,6 +28,8 @@ module.exports = function(io) {
 	};
 
 	this.moveSnake = function(snake, movement) {
+
+		// Nice and simple edge wrapping
 		x = snake.head().x + movement.x;
 		if (x >= this.width) { x = 0; }
 		if (x < 0) { x = this.width - 1; }
@@ -36,8 +38,8 @@ module.exports = function(io) {
 		if (y >= this.height) { y = 0; }
 		if (y < 0) { y = this.height - 1; }
 
+		// Create the next position for snake
 		var newPos = {x: x, y: y};
-
 
 		// Flattern all snake bits into a long array of hash coordinates
 		snakeBits = _(this.snakes).chain().map(function(snake) {
@@ -63,7 +65,6 @@ module.exports = function(io) {
 		});
 		
 		snake.setPos(newPos);
-		return 1;
 	};
 
 	this.placeFood = function() {
