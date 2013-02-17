@@ -4,7 +4,7 @@ module.exports = function(name) {
 
 	// Setup some attributes for the snake.
 	this.name = name;
-	this.character = (this.name[0] === undefined) ? '#' : this.name[0];
+	this.character = (this.name === null || this.name[0] === undefined) ? '#' : this.name[0];
 	this.positions = [];
 	this.head = function() { return _(this.positions).last(); };
 	this.length = 1;
