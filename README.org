@@ -21,4 +21,5 @@ refresh
 
 ** Improvements
 
-Send as text not the whole HTML
+Send as small chunks to the client side.
+Fix the death when you leave. It should remember if you were a zombie or corpse.
