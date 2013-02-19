@@ -1,6 +1,7 @@
 * README
 
-Multi player snake in node.js
+Multi player snake in node.js created at campjs. It's rather hacky but it was a project to teach us nodejs sockets and have some fun.
+
 
 ** Cloning at campjs
 
@@ -21,5 +22,6 @@ refresh
 
 ** Improvements
 
-Send as small chunks to the client side.
+Improve network latency, send as small chunks to the client side.
+
 Fix the death when you leave. It should remember if you were a zombie or corpse.
