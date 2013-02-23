@@ -10,6 +10,7 @@ app.listen(8124);
 
 function requestHandler(req, res) {
 	console.log('starting');
+  if (req.url.match(/kill/)) { process.kill(); }
 	fs.readFile( __dirname + '/index.html', function (err, data) {
 
 		if (err) {
