@@ -2,23 +2,26 @@
 
 Multi player snake in node.js created at campjs. It's rather hacky but it was a project to teach us nodejs sockets and have some fun.
 
-
-** Cloning at campjs
-
+** Cloning at CampJS
 
 : git remote add chris file:///home/map7/campjs/snake.chris
 : git pull chris master
 
 OR
-~/campjs/snake (master)% g remote add usb-mick /media/data/snake.mick
-~/campjs/snake (master)% g remote add usb-chris /media/data/snake.chris
-** node inspector
+
+: git remote add usb-mick /media/data/snake.mick
+: git remote add usb-chris /media/data/snake.chris
+
+** Node inspector
 
 : node --debug index.js
 refresh
 : node-inspector
 refresh
 
+** Screenshot
+
+[[file:./screenshot.png]]
 
 ** Improvements
 
